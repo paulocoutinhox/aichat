@@ -38,20 +38,19 @@ run-streamlit:
 	streamlit run app-streamlit.py
 
 docker-build:
-	docker build --no-cache -t speech-test .
+	docker build --no-cache -t aichat .
 
 docker-run:
 	@echo "Running..."
-	@docker run --rm -p 9000:9000 -p 8501:8501 -e SPEECH_KEY=${SPEECH_KEY} -e SPEECH_REGION=${SPEECH_REGION} -e OPENAI_API_KEY=${OPENAI_API_KEY} speech-test streamlit run app-streamlit.py
-
+	@docker run --rm -p 9000:9000 -p 8501:8501 -e SPEECH_KEY=${SPEECH_KEY} -e SPEECH_REGION=${SPEECH_REGION} -e OPENAI_API_KEY=${OPENAI_API_KEY} aichat streamlit run app-streamlit.py
 
 format:
 	black .
 
 heroku-logs:
-	heroku logs -a speech-test --tail
+	heroku logs -a aichat --tail
 
 heroku-docker-build:
 	heroku container:login
-	heroku container:push web -a speech-test
-	heroku container:release web -a speech-test
+	heroku container:push web -a aichat
+	heroku container:release web -a aichat
