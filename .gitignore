@@ -1,0 +1,39 @@
+# os
+Thumbs.db
+.DS_Store
+
+# ide
+.idea
+.vscode
+.iml
+
+# auto generated
+**/*.pyc
+*.autosave
+*.user
+*.user.*
+CMakeSettings.json
+.vs
+__pycache__
+Brewfile.lock.json
+
+# node
+node_modules
+package-lock.json
+
+# conan
+/CMakeUserPresets.json
+
+# java/kotlin
+.gradle
+
+# cxx
+.cxx
+
+# custom
+build
+build-*
+audio.mp3
+flagged
+tmp
+public

@@ -1,0 +1,5 @@
+azure-cognitiveservices-speech
+gradio
+openai
+streamlit
+git+https://github.com/paulocoutinhox/st-message
