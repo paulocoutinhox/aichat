@@ -1,5 +1,9 @@
 # Ai Chat
 
+This is an Ai Chat powered by OpenAI (GPT-3) for text and Azure for voice generation.
+
+### How to use
+
 To run execute:
 
 ```
