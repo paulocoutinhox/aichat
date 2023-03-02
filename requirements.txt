@@ -3,3 +3,6 @@ gradio
 openai
 streamlit
 git+https://github.com/paulocoutinhox/st-message
+pygemstones
+nltk
+transformers

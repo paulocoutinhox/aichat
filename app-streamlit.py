@@ -3,9 +3,10 @@ import os
 import uuid
 
 import azure.cognitiveservices.speech as speechsdk
-import openai
 import streamlit as st
 from streamlit_message import message as st_message
+
+import functions as fnc
 
 # application
 st.title("Chatbot")
@@ -13,6 +14,7 @@ st.title("Chatbot")
 # history
 if "history" not in st.session_state:
     st.session_state.history = []
+
 
 # generate data
 def generate_answer():
@@ -32,29 +34,16 @@ def generate_answer():
 
             if not is_picture and not is_audio:
                 if is_user:
-                    message_history += "Q: " + chat["message"].strip() + "\n\n"
+                    message_history += chat["message"].strip() + "\n\n"
                 else:
-                    message_history += "A: " + chat["message"].strip() + "\n\n"
+                    message_history += chat["message"].strip() + "\n\n"
 
     message_history = message_history + "\n\n" + user_message
     message_history = message_history.strip()
+    message_history = fnc.break_up_text_to_max_tokens(message_history)
 
     # call openai api
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=message_history,
-        max_tokens=1000,
-        n=1,
-        stop=None,
-        temperature=0,
-    )
-
-    result_text = response.choices[0].text
-
-    if result_text:
-        result_text = result_text.strip()
+    openai_data = fnc.openai_call(prompt=message_history)
 
     # requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
     speech_config = speechsdk.SpeechConfig(
@@ -75,7 +64,7 @@ def generate_answer():
     )
 
     # get text from gradio
-    speech_synthesis_result = speech_synthesizer.speak_text_async(result_text).get()
+    speech_synthesis_result = speech_synthesizer.speak_text_async(openai_data).get()
 
     if (
         speech_synthesis_result.reason
@@ -97,7 +86,7 @@ def generate_answer():
     )
 
     st.session_state.history.append(
-        {"message": result_text, "is_user": False, "key": str(uuid.uuid4())}
+        {"message": openai_data, "is_user": False, "key": str(uuid.uuid4())}
     )
 
     # get audio content as base 64
